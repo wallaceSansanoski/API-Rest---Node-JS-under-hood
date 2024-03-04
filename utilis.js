@@ -8,7 +8,7 @@ function writeRegisterUser (filename, data) {
     })
 }
 
-function includeUser(request) {
+function detailsUserFromBody(request) {
     return new Promise((resolve, reject) => {
         try {
             let body = ''
@@ -28,5 +28,5 @@ function includeUser(request) {
 
 module.exports = {
     writeRegisterUser,
-    includeUser
+    detailsUserFromBody
 }

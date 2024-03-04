@@ -1,5 +1,5 @@
 const http = require('node:http')
-const {  getAllUsers, getUserByID, createUser, userDelete } = require('./controller/usersControllers')
+const {  getAllUsers, getUserByID, createUser, userDelete, updateUser } = require('./controller/usersControllers')
 
 const PORT = process.env.PORT || '3000'
 
@@ -20,6 +20,9 @@ http.createServer((request, response) => {
     else if(method === 'DELETE' && url.match(/\/user\/remove\/([0-9]+)/)) {
         const id = url.match(/\/user\/remove\/([0-9]+)/)[0].split('/')[3]
         userDelete(request,response, id)
+    }else if (method === 'PUT' && url.match(/\/user\/update\/([0-9]+)/)) {
+        const id = url.match(/\/user\/update\/([0-9]+)/)[0].split('/')[3]
+      updateUser(request, response, id)
     }else  {
         response.writeHead(404, { 'Content-Type' : 'application/json'})
        response.end(JSON.stringify({ message : 'Not found route***'}))

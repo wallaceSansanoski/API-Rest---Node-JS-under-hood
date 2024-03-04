@@ -30,8 +30,21 @@ function addUser (user) {
 function deleteUser(id){
     return new Promise((resolve, reject) => {
         const user = users.findIndex((user) => parseInt(user.id) === parseInt(id))
-        if(user < 0 )return reject({message  : 'ID not exist'})
+        if(user < 0 )return reject({message:'ID not exist'})
         users.splice(user, 1)
+        writeRegisterUser('./db/database.json', users)
+        resolve(users)
+    })
+}
+
+function updateUserByID(id, update) {
+    return new Promise((resolve, reject) =>{
+        const userID = users.findIndex(user => parseInt(user.id) === parseInt(id))
+        if(userID < 0 )return reject({message:'ID not exist'})
+        users[userID] = {
+            ...users[userID],
+            ...update
+        }
         writeRegisterUser('./db/database.json', users)
         resolve(users)
     })
@@ -41,5 +54,6 @@ module.exports = {
     findAll,
     findByID,
     addUser,
-    deleteUser
+    deleteUser,
+    updateUserByID
 }

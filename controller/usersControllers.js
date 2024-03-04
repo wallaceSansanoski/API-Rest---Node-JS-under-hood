@@ -1,5 +1,5 @@
-const { findAll, findByID, addUser, deleteUser} = require("../models/usersModels");
-const { includeUser } = require("../utilis");
+const { findAll, findByID, addUser, deleteUser, updateUserByID} = require("../models/usersModels");
+const { detailsUserFromBody } = require("../utilis");
 
 //@ desc -  return all user
 //@ route  GET - /users
@@ -38,7 +38,7 @@ async function getUserByID (request, response, id) {
 async function createUser(request, response) {
     
     try {
-        const body = await includeUser(request)
+        const body = await detailsUserFromBody(request)
         addUser(body)
 
         response.writeHead(201, { 'Content-Type': 'application/json' })
@@ -65,9 +65,23 @@ async function userDelete(request, response, id) {
     }
 }
 
+async function updateUser(request, response, id){
+    try {
+        const bodyUpdate = await detailsUserFromBody(request)
+       const result = await updateUserByID(id, bodyUpdate)
+       response.writeHead({'Content-Type':'application/json'})
+       
+       response.end(JSON.stringify(result))
+        
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 module.exports = {
      getAllUsers,
      getUserByID,
      createUser,
-     userDelete
+     userDelete,
+     updateUser
 }
